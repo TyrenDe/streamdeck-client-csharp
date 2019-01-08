@@ -136,7 +136,7 @@
     <Content Include="Images\TyDidIt40x40.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PropertyInspector\Index.html">
+    <Content Include="PropertyInspector\ChangeImage\Index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PropertyInspector\Index.js">

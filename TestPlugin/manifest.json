@@ -26,7 +26,8 @@
       ],
       "SupportedInMultiActions": false,
       "Tooltip": "This demonstrates changing an image",
-      "UUID": "com.tyren.testplugin.changeimage"
+      "UUID": "com.tyren.testplugin.changeimage",
+      "PropertyInspectorPath": "PropertyInspector/ChangeImage/Index.html"
     }
   ],
   "Author": "Shane DeSeranno",
@@ -38,7 +39,6 @@
   "CodePath": "testplugin.exe",
   "Category": "C# Test Plugin",
   "CategoryIcon": "Images/categoryIcon",
-  "PropertyInspectorPath": "PropertyInspector/Index.html",
   "OS": [
     {
       "Platform": "windows",
