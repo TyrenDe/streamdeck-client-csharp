@@ -3,11 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>streamdeck_client_csharp</RootNamespace>
-    <Version>0.1.0.0</Version>
+    <Version>0.1.0.0-preview</Version>
     <Authors>Shane DeSeranno</Authors>
     <Product />
     <Description>This is a C# wrapper library used to write Elgato Stream Deck plugins.</Description>
-    <Copyright>2019</Copyright>
+    <Copyright>Copyright © Shane DeSeranno (TyrenDe) 2019</Copyright>
+    <PackageLicenseUrl>https://github.com/TyrenDe/streamdeck-client-csharp/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/TyrenDe/streamdeck-client-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TyrenDe/streamdeck-client-csharp</RepositoryUrl>
+    <PackageTags>Streaming Stream Deck Elgato</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
