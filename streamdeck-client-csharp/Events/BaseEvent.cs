@@ -6,23 +6,39 @@ using System.Text;
 
 namespace streamdeck_client_csharp.Events
 {
+    public static class EventTypes
+    {
+        public const string KeyDown = "keyDown";
+        public const string KeyUp = "keyUp";
+        public const string WillAppear = "willAppear";
+        public const string WillDisappear = "willDisappear";
+        public const string TitleParametersDidChange = "titleParametersDidChange";
+        public const string DeviceDidConnect = "deviceDidConnect";
+        public const string DeviceDidDisconnect = "deviceDidDisconnect";
+        public const string ApplicationDidLaunch = "applicationDidLaunch";
+        public const string ApplicationDidTerminate = "applicationDidTerminate";
+        public const string SendToPlugin = "sendToPlugin";
+    }
+
     public abstract class BaseEvent
     {
         private static Dictionary<string, Type> s_EventMap = new Dictionary<string, Type>
         {
-            { "keyDown", typeof(KeyDownEvent) },
-            { "keyUp", typeof(KeyUpEvent) },
+            { EventTypes.KeyDown, typeof(KeyDownEvent) },
+            { EventTypes.KeyUp, typeof(KeyUpEvent) },
 
-            { "willAppear", typeof(WillAppearEvent) },
-            { "willDisappear", typeof(WillDisappearEvent) },
+            { EventTypes.WillAppear, typeof(WillAppearEvent) },
+            { EventTypes.WillDisappear, typeof(WillDisappearEvent) },
 
-            { "titleParametersDidChange", typeof(TitleParametersDidChangeEvent) },
+            { EventTypes.TitleParametersDidChange, typeof(TitleParametersDidChangeEvent) },
 
-            { "deviceDidConnect", typeof(DeviceDidConnectEvent) },
-            { "deviceDidDisconnect", typeof(DeviceDidDisconnectEvent) },
+            { EventTypes.DeviceDidConnect, typeof(DeviceDidConnectEvent) },
+            { EventTypes.DeviceDidDisconnect, typeof(DeviceDidDisconnectEvent) },
 
-            { "applicationDidLaunch", typeof(ApplicationDidLaunchEvent) },
-            { "applicationDidTerminate", typeof(ApplicationDidTerminateEvent) },
+            { EventTypes.ApplicationDidLaunch, typeof(ApplicationDidLaunchEvent) },
+            { EventTypes.ApplicationDidTerminate, typeof(ApplicationDidTerminateEvent) },
+
+            { EventTypes.SendToPlugin, typeof(SendToPluginEvent) },
         };
 
         [JsonProperty("event")]

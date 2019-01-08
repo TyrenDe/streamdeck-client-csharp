@@ -1,6 +1,8 @@
 ﻿using CommandLine;
 using CommandLine.Text;
+using Newtonsoft.Json;
 using streamdeck_client_csharp;
+using streamdeck_client_csharp.Events;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -106,9 +108,13 @@ namespace TestPlugin
                 }
             };
 
+            connection.OnSendToPlugin += Connection_OnSendToPlugin;
+
             // Start the connection
             connection.Run();
 
+            // Current Directory is the base Stream Deck Install path.
+            // For example: C:\Program Files\Elgato\StreamDeck\
             Image image = Image.FromFile(@"Plugins\com.tyren.testplugin.sdPlugin\Images\TyDidIt40x40.png");
 
             // Wait for up to 10 seconds to connect
@@ -137,6 +143,11 @@ namespace TestPlugin
                     }
                 }
             }
+        }
+
+        private static void Connection_OnSendToPlugin(object sender, StreamDeckEventReceivedEventArgs<SendToPluginEvent> e)
+        {
+            System.Diagnostics.Debug.WriteLine($"PLUGIN: {JsonConvert.SerializeObject(e.Event)}");
         }
     }
 }

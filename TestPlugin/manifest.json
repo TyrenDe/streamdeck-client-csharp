@@ -38,6 +38,7 @@
   "CodePath": "testplugin.exe",
   "Category": "C# Test Plugin",
   "CategoryIcon": "Images/categoryIcon",
+  "PropertyInspectorPath": "PropertyInspector/Index.html",
   "OS": [
     {
       "Platform": "windows",
