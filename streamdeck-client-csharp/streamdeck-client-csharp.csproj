@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>streamdeck_client_csharp</RootNamespace>
+    <Version>0.1.0.0</Version>
+    <Authors>Shane DeSeranno</Authors>
+    <Product />
+    <Description>This is a C# wrapper library used to write Elgato Stream Deck plugins.</Description>
+    <Copyright>2019</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0-preview.18571.3" />
+  </ItemGroup>
+
+</Project>

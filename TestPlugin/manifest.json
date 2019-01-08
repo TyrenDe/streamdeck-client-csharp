@@ -1,0 +1,47 @@
+{
+  "Actions": [
+    {
+      "Icon": "Images/icon",
+      "Name": "Test Plugin - Counter",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Counts up from 0 every second",
+      "UUID": "com.tyren.testplugin.counter"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Test Plugin - Change Image",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "This demonstrates changing an image",
+      "UUID": "com.tyren.testplugin.changeimage"
+    }
+  ],
+  "Author": "Shane DeSeranno",
+  "Description": "Used to test the StreamDeck C# SDK",
+  "Name": "C# Test Plugin",
+  "Icon": "Images/pluginIcon",
+  "URL": "https://github.com/",
+  "Version": "0.1",
+  "CodePath": "testplugin.exe",
+  "Category": "C# Test Plugin",
+  "CategoryIcon": "Images/categoryIcon",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ]
+}
