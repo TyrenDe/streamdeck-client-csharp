@@ -44,7 +44,7 @@ namespace streamdeck_client_csharp
         public event EventHandler<StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>> OnDeviceDidDisconnect;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>> OnApplicationDidLaunch;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>> OnApplicationDidTerminate;
-        public event EventHandler<StreamDeckEventReceivedEventArgs<SendToPluginEvent>> OnSendToPlugin;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<JObject>> OnGenericEvent;
 
         public StreamDeckConnection(int port, string uuid, string registerEvent)
         {
@@ -205,18 +205,24 @@ namespace streamdeck_client_csharp
                             if (result.EndOfMessage)
                             {
                                 BaseEvent evt = BaseEvent.Parse(textBuffer.ToString());
-                                switch (evt.Event)
+                                if (evt == null)
                                 {
-                                    case EventTypes.KeyDown: OnKeyDown?.Invoke(this, new StreamDeckEventReceivedEventArgs<KeyDownEvent>(evt as KeyDownEvent)); break;
-                                    case EventTypes.KeyUp: OnKeyUp?.Invoke(this, new StreamDeckEventReceivedEventArgs<KeyUpEvent>(evt as KeyUpEvent)); break;
-                                    case EventTypes.WillAppear: OnWillAppear?.Invoke(this, new StreamDeckEventReceivedEventArgs<WillAppearEvent>(evt as WillAppearEvent)); break;
-                                    case EventTypes.WillDisappear: OnWillDisappear?.Invoke(this, new StreamDeckEventReceivedEventArgs<WillDisappearEvent>(evt as WillDisappearEvent)); break;
-                                    case EventTypes.TitleParametersDidChange: OnTitleParametersDidChange?.Invoke(this, new StreamDeckEventReceivedEventArgs<TitleParametersDidChangeEvent>(evt as TitleParametersDidChangeEvent)); break;
-                                    case EventTypes.DeviceDidConnect: OnDeviceDidConnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidConnectEvent>(evt as DeviceDidConnectEvent)); break;
-                                    case EventTypes.DeviceDidDisconnect: OnDeviceDidDisconnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>(evt as DeviceDidDisconnectEvent)); break;
-                                    case EventTypes.ApplicationDidLaunch: OnApplicationDidLaunch?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>(evt as ApplicationDidLaunchEvent)); break;
-                                    case EventTypes.ApplicationDidTerminate: OnApplicationDidTerminate?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>(evt as ApplicationDidTerminateEvent)); break;
-                                    case EventTypes.SendToPlugin: OnSendToPlugin?.Invoke(this, new StreamDeckEventReceivedEventArgs<SendToPluginEvent>(evt as SendToPluginEvent)); break;
+                                    OnGenericEvent?.Invoke(this, new StreamDeckEventReceivedEventArgs<JObject>(JObject.Parse(textBuffer.ToString())));
+                                }
+                                else
+                                {
+                                    switch (evt.Event)
+                                    {
+                                        case EventTypes.KeyDown: OnKeyDown?.Invoke(this, new StreamDeckEventReceivedEventArgs<KeyDownEvent>(evt as KeyDownEvent)); break;
+                                        case EventTypes.KeyUp: OnKeyUp?.Invoke(this, new StreamDeckEventReceivedEventArgs<KeyUpEvent>(evt as KeyUpEvent)); break;
+                                        case EventTypes.WillAppear: OnWillAppear?.Invoke(this, new StreamDeckEventReceivedEventArgs<WillAppearEvent>(evt as WillAppearEvent)); break;
+                                        case EventTypes.WillDisappear: OnWillDisappear?.Invoke(this, new StreamDeckEventReceivedEventArgs<WillDisappearEvent>(evt as WillDisappearEvent)); break;
+                                        case EventTypes.TitleParametersDidChange: OnTitleParametersDidChange?.Invoke(this, new StreamDeckEventReceivedEventArgs<TitleParametersDidChangeEvent>(evt as TitleParametersDidChangeEvent)); break;
+                                        case EventTypes.DeviceDidConnect: OnDeviceDidConnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidConnectEvent>(evt as DeviceDidConnectEvent)); break;
+                                        case EventTypes.DeviceDidDisconnect: OnDeviceDidDisconnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>(evt as DeviceDidDisconnectEvent)); break;
+                                        case EventTypes.ApplicationDidLaunch: OnApplicationDidLaunch?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>(evt as ApplicationDidLaunchEvent)); break;
+                                        case EventTypes.ApplicationDidTerminate: OnApplicationDidTerminate?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>(evt as ApplicationDidTerminateEvent)); break;
+                                    }
                                 }
 
                                 textBuffer.Clear();

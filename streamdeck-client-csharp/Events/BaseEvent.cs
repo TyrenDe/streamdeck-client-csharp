@@ -17,7 +17,6 @@ namespace streamdeck_client_csharp.Events
         public const string DeviceDidDisconnect = "deviceDidDisconnect";
         public const string ApplicationDidLaunch = "applicationDidLaunch";
         public const string ApplicationDidTerminate = "applicationDidTerminate";
-        public const string SendToPlugin = "sendToPlugin";
     }
 
     public abstract class BaseEvent
@@ -37,8 +36,6 @@ namespace streamdeck_client_csharp.Events
 
             { EventTypes.ApplicationDidLaunch, typeof(ApplicationDidLaunchEvent) },
             { EventTypes.ApplicationDidTerminate, typeof(ApplicationDidTerminateEvent) },
-
-            { EventTypes.SendToPlugin, typeof(SendToPluginEvent) },
         };
 
         [JsonProperty("event")]
@@ -49,13 +46,13 @@ namespace streamdeck_client_csharp.Events
             JObject jsonObject = JObject.Parse(json);
             if (!jsonObject.ContainsKey("event"))
             {
-                throw new InvalidOperationException("Invalid message, missing `event` type");
+                return null;
             }
 
             string eventType = jsonObject["event"].ToString();
             if (!s_EventMap.ContainsKey(eventType))
             {
-                throw new InvalidOperationException($"Invalid message, unknown `event` type: {eventType}");
+                return null;
             }
 
             return JsonConvert.DeserializeObject(json, s_EventMap[eventType]) as BaseEvent;

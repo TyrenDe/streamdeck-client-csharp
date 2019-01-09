@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using streamdeck_client_csharp;
 using streamdeck_client_csharp.Events;
 using System;
@@ -108,7 +109,7 @@ namespace TestPlugin
                 }
             };
 
-            connection.OnSendToPlugin += Connection_OnSendToPlugin;
+            connection.OnGenericEvent += Connection_OnGenericEvent;
 
             // Start the connection
             connection.Run();
@@ -145,9 +146,9 @@ namespace TestPlugin
             }
         }
 
-        private static void Connection_OnSendToPlugin(object sender, StreamDeckEventReceivedEventArgs<SendToPluginEvent> e)
+        private static void Connection_OnGenericEvent(object sender, StreamDeckEventReceivedEventArgs<JObject> e)
         {
-            System.Diagnostics.Debug.WriteLine($"PLUGIN: {JsonConvert.SerializeObject(e.Event)}");
+            System.Diagnostics.Debug.WriteLine($"PLUGIN: {e.Event.ToString()}");
         }
     }
 }
