@@ -34,7 +34,7 @@
   "Description": "Used to test the StreamDeck C# SDK",
   "Name": "C# Test Plugin",
   "Icon": "Images/pluginIcon",
-  "URL": "https://github.com/",
+  "URL": "https://github.com/TyrenDe/streamdeck-client-csharp",
   "Version": "0.1",
   "CodePath": "testplugin.exe",
   "Category": "C# Test Plugin",

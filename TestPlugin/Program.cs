@@ -109,7 +109,7 @@ namespace TestPlugin
                 }
             };
 
-            connection.OnGenericEvent += Connection_OnGenericEvent;
+            connection.OnSendToPlugin += Connection_OnSendToPlugin;
 
             // Start the connection
             connection.Run();
@@ -146,9 +146,9 @@ namespace TestPlugin
             }
         }
 
-        private static void Connection_OnGenericEvent(object sender, StreamDeckEventReceivedEventArgs<JObject> e)
+        private static void Connection_OnSendToPlugin(object sender, StreamDeckEventReceivedEventArgs<SendToPluginEvent> e)
         {
-            System.Diagnostics.Debug.WriteLine($"PLUGIN: {e.Event.ToString()}");
+            System.Diagnostics.Debug.WriteLine($"PLUGIN: {JsonConvert.SerializeObject(e.Event)}");
         }
     }
 }

@@ -44,7 +44,7 @@ namespace streamdeck_client_csharp
         public event EventHandler<StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>> OnDeviceDidDisconnect;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>> OnApplicationDidLaunch;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>> OnApplicationDidTerminate;
-        public event EventHandler<StreamDeckEventReceivedEventArgs<JObject>> OnGenericEvent;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<SendToPluginEvent>> OnSendToPlugin;
 
         public StreamDeckConnection(int port, string uuid, string registerEvent)
         {
@@ -205,11 +205,7 @@ namespace streamdeck_client_csharp
                             if (result.EndOfMessage)
                             {
                                 BaseEvent evt = BaseEvent.Parse(textBuffer.ToString());
-                                if (evt == null)
-                                {
-                                    OnGenericEvent?.Invoke(this, new StreamDeckEventReceivedEventArgs<JObject>(JObject.Parse(textBuffer.ToString())));
-                                }
-                                else
+                                if (evt != null)
                                 {
                                     switch (evt.Event)
                                     {
@@ -222,7 +218,12 @@ namespace streamdeck_client_csharp
                                         case EventTypes.DeviceDidDisconnect: OnDeviceDidDisconnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>(evt as DeviceDidDisconnectEvent)); break;
                                         case EventTypes.ApplicationDidLaunch: OnApplicationDidLaunch?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>(evt as ApplicationDidLaunchEvent)); break;
                                         case EventTypes.ApplicationDidTerminate: OnApplicationDidTerminate?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>(evt as ApplicationDidTerminateEvent)); break;
+                                        case EventTypes.SendToPlugin: OnSendToPlugin?.Invoke(this, new StreamDeckEventReceivedEventArgs<SendToPluginEvent>(evt as SendToPluginEvent)); break;
                                     }
+                                }
+                                else
+                                {
+                                    // Consider logging or throwing an error here
                                 }
 
                                 textBuffer.Clear();
