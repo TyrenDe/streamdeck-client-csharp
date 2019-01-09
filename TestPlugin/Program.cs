@@ -41,7 +41,7 @@ namespace TestPlugin
             // The command line args parser expects all args to use `--`, so, let's append
             for (int count = 0; count < args.Length; count++)
             {
-                if (args[count].StartsWith("-"))
+                if (args[count].StartsWith("-") && !args[count].StartsWith("--"))
                 {
                     args[count] = $"-{args[count]}";
                 }
