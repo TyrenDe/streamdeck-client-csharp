@@ -136,10 +136,10 @@
     <Content Include="Images\TyDidIt40x40.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PropertyInspector\ChangeImage\Index.html">
+    <Content Include="PropertyInspector\PIDemo\Index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PropertyInspector\Index.js">
+    <Content Include="PropertyInspector\PIDemo\Index.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PropertyInspector\sdpi.css">

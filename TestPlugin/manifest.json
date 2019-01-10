@@ -26,8 +26,22 @@
       ],
       "SupportedInMultiActions": false,
       "Tooltip": "This demonstrates changing an image",
-      "UUID": "com.tyren.testplugin.changeimage",
-      "PropertyInspectorPath": "PropertyInspector/ChangeImage/Index.html"
+      "UUID": "com.tyren.testplugin.changeimage"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Test Plugin - Property Inspector",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "17"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "This demonstrates saving and using settings",
+      "UUID": "com.tyren.testplugin.pidemo",
+      "PropertyInspectorPath": "PropertyInspector/PIDemo/Index.html"
     }
   ],
   "Author": "Shane DeSeranno",
@@ -44,5 +58,10 @@
       "Platform": "windows",
       "MinimumVersion": "10"
     }
-  ]
+  ],
+  "ApplicationsToMonitor": {
+    "windows": [
+      "notepad.exe"
+    ]
+  }
 }

@@ -77,8 +77,19 @@ namespace TestPlugin
                 disconnectEvent.Set();
             };
 
+            connection.OnApplicationDidLaunch += (sender, args) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"App Launch: {args.Event.Payload.Application}");
+            };
+
+            connection.OnApplicationDidTerminate += (sender, args) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"App Terminate: {args.Event.Payload.Application}");
+            };
+
             Dictionary<string, int> counters = new Dictionary<string, int>();
             List<string> images = new List<string>();
+            Dictionary<string, JObject> settings = new Dictionary<string, JObject>();
             connection.OnWillAppear += (sender, args) =>
             {
                 switch (args.Event.Action)
@@ -95,6 +106,24 @@ namespace TestPlugin
                             images.Add(args.Event.Context);
                         }
                         break;
+                    case "com.tyren.testplugin.pidemo":
+                        lock (settings)
+                        {
+                            settings[args.Event.Context] = args.Event.Payload.Settings;
+                            if (settings[args.Event.Context] == null)
+                            {
+                                settings[args.Event.Context] = new JObject();
+                            }
+                            if (settings[args.Event.Context]["selectedValue"] == null)
+                            {
+                                settings[args.Event.Context]["selectedValue"] = JValue.CreateString("20");
+                            }
+                            if (settings[args.Event.Context]["textDemoValue"] == null)
+                            {
+                                settings[args.Event.Context]["textDemoValue"] = JValue.CreateString("");
+                            }
+                        }
+                        break;
                 }
             };
 
@@ -107,9 +136,74 @@ namespace TestPlugin
                         counters.Remove(args.Event.Context);
                     }
                 }
+
+                lock (images)
+                {
+                    if (images.Contains(args.Event.Context))
+                    {
+                        images.Remove(args.Event.Context);
+                    }
+                }
+
+                lock (settings)
+                {
+                    if (settings.ContainsKey(args.Event.Context))
+                    {
+                        settings.Remove(args.Event.Context);
+                    }
+                }
             };
 
-            connection.OnSendToPlugin += Connection_OnSendToPlugin;
+            connection.OnSendToPlugin += async (sender, args) =>
+            {
+                JObject setting = null;
+                switch (args.Event.Payload["property_inspector"].ToString().ToLower())
+                {
+                    case "propertyinspectorconnected":
+                        // Send settings to Property Inspector
+                        lock (settings)
+                        {
+                            settings.TryGetValue(args.Event.Context, out setting);
+                        }
+
+                        if (setting != null)
+                        {
+                            await connection.SendToPropertyInspectorAsync(args.Event.Action, setting, args.Event.Context);
+                        }
+                        break;
+                    case "propertyinspectorwilldisappear":
+                        lock (settings)
+                        {
+                            settings.TryGetValue(args.Event.Context, out setting);
+                        }
+
+                        if (setting != null)
+                        {
+                            await connection.SetSettingsAsync(setting, args.Event.Context);
+                        }
+                        break;
+                    case "updatesettings":
+                        lock (settings)
+                        {
+                            settings.TryGetValue(args.Event.Context, out setting);
+                        }
+
+                        if (setting != null)
+                        {
+                            setting["selectedValue"] = args.Event.Payload["selectedValue"];
+                            setting["textDemoValue"] = args.Event.Payload["textDemoValue"];
+                            await connection.SetSettingsAsync(setting, args.Event.Context);
+                        }
+                        break;
+                }
+
+
+
+                if (setting != null)
+                {
+
+                }
+            };
 
             // Start the connection
             connection.Run();
@@ -144,11 +238,6 @@ namespace TestPlugin
                     }
                 }
             }
-        }
-
-        private static void Connection_OnSendToPlugin(object sender, StreamDeckEventReceivedEventArgs<SendToPluginEvent> e)
-        {
-            System.Diagnostics.Debug.WriteLine($"PLUGIN: {JsonConvert.SerializeObject(e.Event)}");
         }
     }
 }
