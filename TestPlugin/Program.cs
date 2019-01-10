@@ -196,13 +196,6 @@ namespace TestPlugin
                         }
                         break;
                 }
-
-
-
-                if (setting != null)
-                {
-
-                }
             };
 
             // Start the connection
