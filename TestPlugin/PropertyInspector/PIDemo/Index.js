@@ -14,36 +14,44 @@ function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
     addDynamicStyles(inInfo.colors);
 
     websocket.onopen = function () {
-        var json = {
+        var register = {
             event: inRegisterEvent,
             uuid: inUUID
         };
 
-        websocket.send(JSON.stringify(json));
+        websocket.send(JSON.stringify(register));
 
-        // Notify the plugin that we are connected
-        sendValueToPlugin('propertyInspectorConnected', 'property_inspector');
+        var requestSettings = {
+            event: 'getSettings',
+            context: actionInfo.context
+        };
+
+        websocket.send(JSON.stringify(requestSettings));
     };
 
     websocket.onmessage = function (evt) {
         // Received message from Stream Deck
         var jsonObj = JSON.parse(evt.data);
-        if (jsonObj.event === 'sendToPropertyInspector') {
-            var payload = jsonObj.payload;
-            if (payload.error) {
-                // Show Error
-                // You can use this to show any errors and short circuit the rest of the refresh code
-                return;
-            }
+        alert(evt);
+        switch (jsonObj.event) {
+            case 'didReceiveSettings':
+                var payload = jsonObj.payload;
 
-            var select_single = document.getElementById('select_single');
-            select_single.value = payload.selectedValue;
+                var select_single = document.getElementById('select_single');
+                select_single.value = payload.selectedValue;
 
-            var text_demo = document.getElementById('text_demo');
-            text_demo.value = payload.textDemoValue;
+                var text_demo = document.getElementById('text_demo');
+                text_demo.value = payload.textDemoValue;
 
-            select_single.disabled = false;
-            text_demo.disabled = false;
+                select_single.disabled = false;
+                text_demo.disabled = false;
+                break;
+            case 'propertyInspectorDidDisappear':
+                updateSettings();
+                break;
+            default:
+                alert(jsonObj.event);
+                break;
         }
     };
 }
@@ -52,38 +60,13 @@ function updateSettings() {
     var select_single = document.getElementById('select_single');
     var text_demo = document.getElementById('text_demo');
 
-    var payload = {};
-    payload.property_inspector = 'updateSettings';
-    payload.selectedValue = select_single.value;
-    payload.textDemoValue = text_demo.value;
-    sendPayloadToPlugin(payload);
-}
+    var setSettings = {};
+    setSettings.event = 'setSettings';
+    setSettings.context = uuid;
+    setSettings.payload.selectedValue = select_single.value;
+    setSettings.payload.textDemoValue = text_demo.value;
 
-// our method to pass values to the plugin
-function sendPayloadToPlugin(payload) {
-    if (websocket && (websocket.readyState === 1)) {
-        const json = {
-            'action': actionInfo['action'],
-            'event': 'sendToPlugin',
-            'context': uuid,
-            'payload': payload
-        };
-        websocket.send(JSON.stringify(json));
-    }
-}
-
-function sendValueToPlugin(value, param) {
-    if (websocket && (websocket.readyState === 1)) {
-        const json = {
-            'action': actionInfo['action'],
-            'event': 'sendToPlugin',
-            'context': uuid,
-            'payload': {
-                [param]: value
-            }
-        };
-        websocket.send(JSON.stringify(json));
-    }
+    websocket.send(JSON.stringify(setSettings));
 }
 
 if (!isQT) {
@@ -91,15 +74,6 @@ if (!isQT) {
         initPropertyInspector();
     });
 }
-
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-
-    // Notify the plugin we are about to leave
-    sendValueToPlugin('propertyInspectorWillDisappear', 'property_inspector');
-
-    // Don't set a returnValue to the event, otherwise Chromium with throw an error.
-});
 
 function addDynamicStyles(clrs) {
     const node = document.getElementById('#sdpi-dynamic-styles') || document.createElement('style');

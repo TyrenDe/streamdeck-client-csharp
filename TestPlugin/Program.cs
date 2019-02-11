@@ -106,6 +106,13 @@ namespace TestPlugin
                             images.Add(args.Event.Context);
                         }
                         break;
+                }
+            };
+
+            connection.OnDidReceiveSettings += (sender, args) =>
+            {
+                switch (args.Event.Action)
+                {
                     case "com.tyren.testplugin.pidemo":
                         lock (settings)
                         {
@@ -125,6 +132,7 @@ namespace TestPlugin
                         }
                         break;
                 }
+
             };
 
             connection.OnWillDisappear += (sender, args) =>
@@ -151,50 +159,6 @@ namespace TestPlugin
                     {
                         settings.Remove(args.Event.Context);
                     }
-                }
-            };
-
-            connection.OnSendToPlugin += async (sender, args) =>
-            {
-                JObject setting = null;
-                switch (args.Event.Payload["property_inspector"].ToString().ToLower())
-                {
-                    case "propertyinspectorconnected":
-                        // Send settings to Property Inspector
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            await connection.SendToPropertyInspectorAsync(args.Event.Action, setting, args.Event.Context);
-                        }
-                        break;
-                    case "propertyinspectorwilldisappear":
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            await connection.SetSettingsAsync(setting, args.Event.Context);
-                        }
-                        break;
-                    case "updatesettings":
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            setting["selectedValue"] = args.Event.Payload["selectedValue"];
-                            setting["textDemoValue"] = args.Event.Payload["textDemoValue"];
-                            await connection.SetSettingsAsync(setting, args.Event.Context);
-                        }
-                        break;
                 }
             };
 

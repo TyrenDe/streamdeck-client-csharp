@@ -1,0 +1,23 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace streamdeck_client_csharp.Messages
+{
+    internal class SetGlobalSettingsMessage : IMessage
+    {
+        [JsonProperty("event")]
+        public string Event { get { return "setGlobalSettings"; } }
+
+        [JsonProperty("context")]
+        public string Context { get; private set; }
+
+        [JsonProperty("payload")]
+        public JObject Payload { get; private set; }
+
+        public SetGlobalSettingsMessage(JObject settings, string context)
+        {
+            this.Context = context;
+            this.Payload = settings;
+        }
+    }
+}

@@ -53,6 +53,9 @@
   "CodePath": "testplugin.exe",
   "Category": "C# Test Plugin",
   "CategoryIcon": "Images/categoryIcon",
+  "Software": {
+    "MinimumVersion": "4.1"
+  },
   "OS": [
     {
       "Platform": "windows",
