@@ -19,6 +19,7 @@ namespace streamdeck_client_csharp.Events
         public const string ApplicationDidTerminate = "applicationDidTerminate";
         public const string SendToPlugin = "sendToPlugin";
         public const string DidReceiveSettings = "didReceiveSettings";
+        public const string DidReceiveGlobalSettings = "didReceiveGlobalSettings";
         public const string PropertyInspectorDidAppear = "propertyInspectorDidAppear";
         public const string PropertyInspectorDidDisappear = "propertyInspectorDidDisappear";
     }
@@ -44,6 +45,7 @@ namespace streamdeck_client_csharp.Events
             { EventTypes.SendToPlugin, typeof(SendToPluginEvent) },
 
             { EventTypes.DidReceiveSettings, typeof(DidReceiveSettingsEvent) },
+            { EventTypes.DidReceiveGlobalSettings, typeof(DidReceiveGlobalSettingsEvent) },
 
             { EventTypes.PropertyInspectorDidAppear, typeof(PropertyInspectorDidAppearEvent) },
             { EventTypes.PropertyInspectorDidDisappear, typeof(PropertyInspectorDidDisappearEvent) },
