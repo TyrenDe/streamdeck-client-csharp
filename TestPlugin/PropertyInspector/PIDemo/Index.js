@@ -5,13 +5,14 @@
     runningApps = [],
     isQT = navigator.appVersion.includes('QtWebEngine');
 
-function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
     uuid = inUUID;
     actionInfo = JSON.parse(inActionInfo); // cache the info
     inInfo = JSON.parse(inInfo);
     websocket = new WebSocket('ws://localhost:' + inPort);
 
     addDynamicStyles(inInfo.colors);
+    refreshSettings(actionInfo.payload.settings);
 
     websocket.onopen = function () {
         var register = {
@@ -20,40 +21,35 @@ function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
         };
 
         websocket.send(JSON.stringify(register));
-
-        var requestSettings = {
-            event: 'getSettings',
-            context: actionInfo.context
-        };
-
-        websocket.send(JSON.stringify(requestSettings));
     };
 
     websocket.onmessage = function (evt) {
         // Received message from Stream Deck
         var jsonObj = JSON.parse(evt.data);
-        alert(evt);
         switch (jsonObj.event) {
             case 'didReceiveSettings':
-                var payload = jsonObj.payload;
-
-                var select_single = document.getElementById('select_single');
-                select_single.value = payload.selectedValue;
-
-                var text_demo = document.getElementById('text_demo');
-                text_demo.value = payload.textDemoValue;
-
-                select_single.disabled = false;
-                text_demo.disabled = false;
+                refreshSettings(jsonObj.payload.settings);
                 break;
             case 'propertyInspectorDidDisappear':
                 updateSettings();
                 break;
             default:
-                alert(jsonObj.event);
                 break;
         }
     };
+}
+
+function refreshSettings(settings) {
+    var select_single = document.getElementById('select_single');
+    var text_demo = document.getElementById('text_demo');
+
+    if (settings) {
+        select_single.value = settings.selectedValue;
+        text_demo.value = settings.textDemoValue;
+    }
+
+    select_single.disabled = false;
+    text_demo.disabled = false;
 }
 
 function updateSettings() {
@@ -63,6 +59,7 @@ function updateSettings() {
     var setSettings = {};
     setSettings.event = 'setSettings';
     setSettings.context = uuid;
+    setSettings.payload = {};
     setSettings.payload.selectedValue = select_single.value;
     setSettings.payload.textDemoValue = text_demo.value;
 
