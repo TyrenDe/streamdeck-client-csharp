@@ -109,14 +109,14 @@ namespace streamdeck_client_csharp
             return SendAsync(new ShowOkMessage(context));
         }
 
-        public Task SetGlobalSettingsAsync(JObject settings, string context)
+        public Task SetGlobalSettingsAsync(JObject settings)
         {
-            return SendAsync(new SetGlobalSettingsMessage(settings, context));
+            return SendAsync(new SetGlobalSettingsMessage(settings, this.UUID));
         }
 
-        public Task GetGlobalSettingsAsync(string context)
+        public Task GetGlobalSettingsAsync()
         {
-            return SendAsync(new GetGlobalSettingsMessage(context));
+            return SendAsync(new GetGlobalSettingsMessage(this.UUID));
         }
 
         public Task SetSettingsAsync(JObject settings, string context)

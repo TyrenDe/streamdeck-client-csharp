@@ -11,9 +11,9 @@ namespace streamdeck_client_csharp.Messages
         [JsonProperty("context")]
         public string Context { get; private set; }
 
-        public GetGlobalSettingsMessage(string context)
+        public GetGlobalSettingsMessage(string pluginUUID)
         {
-            this.Context = context;
+            this.Context = pluginUUID;
         }
     }
 }

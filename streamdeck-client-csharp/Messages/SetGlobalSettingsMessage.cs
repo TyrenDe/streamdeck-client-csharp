@@ -14,9 +14,9 @@ namespace streamdeck_client_csharp.Messages
         [JsonProperty("payload")]
         public JObject Payload { get; private set; }
 
-        public SetGlobalSettingsMessage(JObject settings, string context)
+        public SetGlobalSettingsMessage(JObject settings, string pluginUUID)
         {
-            this.Context = context;
+            this.Context = pluginUUID;
             this.Payload = settings;
         }
     }
