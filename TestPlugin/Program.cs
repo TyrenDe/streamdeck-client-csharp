@@ -167,7 +167,7 @@ namespace TestPlugin
 
             // Current Directory is the base Stream Deck Install path.
             // For example: C:\Program Files\Elgato\StreamDeck\
-            Image image = Image.FromFile(@"Plugins\com.tyren.testplugin.sdPlugin\Images\TyDidIt40x40.png");
+            Image image = Image.FromFile(@"Images\TyDidIt40x40.png");
 
             // Wait for up to 10 seconds to connect
             if (connectEvent.WaitOne(TimeSpan.FromSeconds(10)))
