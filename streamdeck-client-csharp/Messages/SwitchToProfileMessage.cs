@@ -16,11 +16,18 @@ namespace streamdeck_client_csharp.Messages
         [JsonProperty("payload")]
         public IPayload Payload { get; private set; }
 
-        public SwitchToProfileMessage(string device, string profileName, string context)
+        public SwitchToProfileMessage(string device, string profileName, string pluginUUID)
         {
-            this.Context = context;
+            this.Context = pluginUUID;
             this.Device = device;
-            this.Payload = new PayloadClass(profileName);
+            if (!string.IsNullOrEmpty(profileName))
+            {
+                this.Payload = new PayloadClass(profileName);
+            }
+            else
+            {
+                this.Payload = new EmptyPayload();
+            }
         }
 
         private class PayloadClass : IPayload
