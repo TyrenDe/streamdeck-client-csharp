@@ -5,85 +5,65 @@
     runningApps = [],
     isQT = navigator.appVersion.includes('QtWebEngine');
 
-function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
     uuid = inUUID;
     actionInfo = JSON.parse(inActionInfo); // cache the info
     inInfo = JSON.parse(inInfo);
     websocket = new WebSocket('ws://localhost:' + inPort);
 
     addDynamicStyles(inInfo.colors);
+    refreshSettings(actionInfo.payload.settings);
 
     websocket.onopen = function () {
-        var json = {
+        var register = {
             event: inRegisterEvent,
             uuid: inUUID
         };
 
-        websocket.send(JSON.stringify(json));
-
-        // Notify the plugin that we are connected
-        sendValueToPlugin('propertyInspectorConnected', 'property_inspector');
+        websocket.send(JSON.stringify(register));
     };
 
     websocket.onmessage = function (evt) {
         // Received message from Stream Deck
         var jsonObj = JSON.parse(evt.data);
-        if (jsonObj.event === 'sendToPropertyInspector') {
-            var payload = jsonObj.payload;
-            if (payload.error) {
-                // Show Error
-                // You can use this to show any errors and short circuit the rest of the refresh code
-                return;
-            }
-
-            var select_single = document.getElementById('select_single');
-            select_single.value = payload.selectedValue;
-
-            var text_demo = document.getElementById('text_demo');
-            text_demo.value = payload.textDemoValue;
-
-            select_single.disabled = false;
-            text_demo.disabled = false;
+        switch (jsonObj.event) {
+            case 'didReceiveSettings':
+                refreshSettings(jsonObj.payload.settings);
+                break;
+            case 'propertyInspectorDidDisappear':
+                updateSettings();
+                break;
+            default:
+                break;
         }
     };
+}
+
+function refreshSettings(settings) {
+    var select_single = document.getElementById('select_single');
+    var text_demo = document.getElementById('text_demo');
+
+    if (settings) {
+        select_single.value = settings.selectedValue;
+        text_demo.value = settings.textDemoValue;
+    }
+
+    select_single.disabled = false;
+    text_demo.disabled = false;
 }
 
 function updateSettings() {
     var select_single = document.getElementById('select_single');
     var text_demo = document.getElementById('text_demo');
 
-    var payload = {};
-    payload.property_inspector = 'updateSettings';
-    payload.selectedValue = select_single.value;
-    payload.textDemoValue = text_demo.value;
-    sendPayloadToPlugin(payload);
-}
+    var setSettings = {};
+    setSettings.event = 'setSettings';
+    setSettings.context = uuid;
+    setSettings.payload = {};
+    setSettings.payload.selectedValue = select_single.value;
+    setSettings.payload.textDemoValue = text_demo.value;
 
-// our method to pass values to the plugin
-function sendPayloadToPlugin(payload) {
-    if (websocket && (websocket.readyState === 1)) {
-        const json = {
-            'action': actionInfo['action'],
-            'event': 'sendToPlugin',
-            'context': uuid,
-            'payload': payload
-        };
-        websocket.send(JSON.stringify(json));
-    }
-}
-
-function sendValueToPlugin(value, param) {
-    if (websocket && (websocket.readyState === 1)) {
-        const json = {
-            'action': actionInfo['action'],
-            'event': 'sendToPlugin',
-            'context': uuid,
-            'payload': {
-                [param]: value
-            }
-        };
-        websocket.send(JSON.stringify(json));
-    }
+    websocket.send(JSON.stringify(setSettings));
 }
 
 if (!isQT) {
@@ -91,15 +71,6 @@ if (!isQT) {
         initPropertyInspector();
     });
 }
-
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-
-    // Notify the plugin we are about to leave
-    sendValueToPlugin('propertyInspectorWillDisappear', 'property_inspector');
-
-    // Don't set a returnValue to the event, otherwise Chromium with throw an error.
-});
 
 function addDynamicStyles(clrs) {
     const node = document.getElementById('#sdpi-dynamic-styles') || document.createElement('style');

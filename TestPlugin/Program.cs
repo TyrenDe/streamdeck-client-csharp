@@ -106,6 +106,13 @@ namespace TestPlugin
                             images.Add(args.Event.Context);
                         }
                         break;
+                }
+            };
+
+            connection.OnDidReceiveSettings += (sender, args) =>
+            {
+                switch (args.Event.Action)
+                {
                     case "com.tyren.testplugin.pidemo":
                         lock (settings)
                         {
@@ -125,6 +132,7 @@ namespace TestPlugin
                         }
                         break;
                 }
+
             };
 
             connection.OnWillDisappear += (sender, args) =>
@@ -154,56 +162,12 @@ namespace TestPlugin
                 }
             };
 
-            connection.OnSendToPlugin += async (sender, args) =>
-            {
-                JObject setting = null;
-                switch (args.Event.Payload["property_inspector"].ToString().ToLower())
-                {
-                    case "propertyinspectorconnected":
-                        // Send settings to Property Inspector
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            await connection.SendToPropertyInspectorAsync(args.Event.Action, setting, args.Event.Context);
-                        }
-                        break;
-                    case "propertyinspectorwilldisappear":
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            await connection.SetSettingsAsync(setting, args.Event.Context);
-                        }
-                        break;
-                    case "updatesettings":
-                        lock (settings)
-                        {
-                            settings.TryGetValue(args.Event.Context, out setting);
-                        }
-
-                        if (setting != null)
-                        {
-                            setting["selectedValue"] = args.Event.Payload["selectedValue"];
-                            setting["textDemoValue"] = args.Event.Payload["textDemoValue"];
-                            await connection.SetSettingsAsync(setting, args.Event.Context);
-                        }
-                        break;
-                }
-            };
-
             // Start the connection
             connection.Run();
 
             // Current Directory is the base Stream Deck Install path.
             // For example: C:\Program Files\Elgato\StreamDeck\
-            Image image = Image.FromFile(@"Plugins\com.tyren.testplugin.sdPlugin\Images\TyDidIt40x40.png");
+            Image image = Image.FromFile(@"Images\TyDidIt40x40.png");
 
             // Wait for up to 10 seconds to connect
             if (connectEvent.WaitOne(TimeSpan.FromSeconds(10)))

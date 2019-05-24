@@ -45,6 +45,10 @@ namespace streamdeck_client_csharp
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>> OnApplicationDidLaunch;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>> OnApplicationDidTerminate;
         public event EventHandler<StreamDeckEventReceivedEventArgs<SendToPluginEvent>> OnSendToPlugin;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<DidReceiveSettingsEvent>> OnDidReceiveSettings;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<DidReceiveGlobalSettingsEvent>> OnDidReceiveGlobalSettings;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<PropertyInspectorDidAppearEvent>> OnPropertyInspectorDidAppear;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<PropertyInspectorDidDisappearEvent>> OnPropertyInspectorDidDisappear;
 
         public StreamDeckConnection(int port, string uuid, string registerEvent)
         {
@@ -70,6 +74,11 @@ namespace streamdeck_client_csharp
         public Task SetTitleAsync(string title, string context, SDKTarget target)
         {
             return SendAsync(new SetTitleMessage(title, context, target));
+        }
+
+        public Task LogMessageAsync(string message)
+        {
+            return SendAsync(new LogMessage(message));
         }
 
         public Task SetImageAsync(Image image, string context, SDKTarget target)
@@ -100,9 +109,24 @@ namespace streamdeck_client_csharp
             return SendAsync(new ShowOkMessage(context));
         }
 
+        public Task SetGlobalSettingsAsync(JObject settings)
+        {
+            return SendAsync(new SetGlobalSettingsMessage(settings, this.UUID));
+        }
+
+        public Task GetGlobalSettingsAsync()
+        {
+            return SendAsync(new GetGlobalSettingsMessage(this.UUID));
+        }
+
         public Task SetSettingsAsync(JObject settings, string context)
         {
             return SendAsync(new SetSettingsMessage(settings, context));
+        }
+
+        public Task GetSettingsAsync(string context)
+        {
+            return SendAsync(new GetSettingsMessage(context));
         }
 
         public Task SetStateAsync(uint state, string context)
@@ -219,6 +243,10 @@ namespace streamdeck_client_csharp
                                         case EventTypes.ApplicationDidLaunch: OnApplicationDidLaunch?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>(evt as ApplicationDidLaunchEvent)); break;
                                         case EventTypes.ApplicationDidTerminate: OnApplicationDidTerminate?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>(evt as ApplicationDidTerminateEvent)); break;
                                         case EventTypes.SendToPlugin: OnSendToPlugin?.Invoke(this, new StreamDeckEventReceivedEventArgs<SendToPluginEvent>(evt as SendToPluginEvent)); break;
+                                        case EventTypes.DidReceiveSettings: OnDidReceiveSettings?.Invoke(this, new StreamDeckEventReceivedEventArgs<DidReceiveSettingsEvent>(evt as DidReceiveSettingsEvent)); break;
+                                        case EventTypes.DidReceiveGlobalSettings: OnDidReceiveGlobalSettings?.Invoke(this, new StreamDeckEventReceivedEventArgs<DidReceiveGlobalSettingsEvent>(evt as DidReceiveGlobalSettingsEvent)); break;
+                                        case EventTypes.PropertyInspectorDidAppear: OnPropertyInspectorDidAppear?.Invoke(this, new StreamDeckEventReceivedEventArgs<PropertyInspectorDidAppearEvent>(evt as PropertyInspectorDidAppearEvent)); break;
+                                        case EventTypes.PropertyInspectorDidDisappear: OnPropertyInspectorDidDisappear?.Invoke(this, new StreamDeckEventReceivedEventArgs<PropertyInspectorDidDisappearEvent>(evt as PropertyInspectorDidDisappearEvent)); break;
                                     }
                                 }
                                 else
