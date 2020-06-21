@@ -71,9 +71,9 @@ namespace streamdeck_client_csharp
             m_CancelSource.Cancel();
         }
 
-        public Task SetTitleAsync(string title, string context, SDKTarget target)
+        public Task SetTitleAsync(string title, string context, SDKTarget target, int? state)
         {
-            return SendAsync(new SetTitleMessage(title, context, target));
+            return SendAsync(new SetTitleMessage(title, context, target, state));
         }
 
         public Task LogMessageAsync(string message)
@@ -81,7 +81,7 @@ namespace streamdeck_client_csharp
             return SendAsync(new LogMessage(message));
         }
 
-        public Task SetImageAsync(Image image, string context, SDKTarget target)
+        public Task SetImageAsync(Image image, string context, SDKTarget target, int? state)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -90,13 +90,13 @@ namespace streamdeck_client_csharp
 
                 // Convert byte[] to Base64 String
                 string base64String = $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
-                return SetImageAsync(base64String, context, target);
+                return SetImageAsync(base64String, context, target, state);
             }
         }
 
-        public Task SetImageAsync(string base64Image, string context, SDKTarget target)
+        public Task SetImageAsync(string base64Image, string context, SDKTarget target, int? state)
         {
-            return SendAsync(new SetImageMessage(base64Image, context, target));
+            return SendAsync(new SetImageMessage(base64Image, context, target, state));
         }
 
         public Task ShowAlertAsync(string context)

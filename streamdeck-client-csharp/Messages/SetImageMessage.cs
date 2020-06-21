@@ -13,10 +13,10 @@ namespace streamdeck_client_csharp.Messages
         [JsonProperty("payload")]
         public IPayload Payload { get; private set; }
 
-        public SetImageMessage(string base64Image, string context, SDKTarget target)
+        public SetImageMessage(string base64Image, string context, SDKTarget target, int? state)
         {
             this.Context = context;
-            this.Payload = new PayloadClass(base64Image, target);
+            this.Payload = new PayloadClass(base64Image, target, state);
         }
 
         private class PayloadClass : IPayload
@@ -27,10 +27,14 @@ namespace streamdeck_client_csharp.Messages
             [JsonProperty("target")]
             public SDKTarget Target { get; private set; }
 
-            public PayloadClass(string image, SDKTarget target)
+            [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+            public int? State { get; private set; }
+
+            public PayloadClass(string image, SDKTarget target, int? state)
             {
                 this.Image = image;
                 this.Target = target;
+                this.State = state;
             }
         }
     }

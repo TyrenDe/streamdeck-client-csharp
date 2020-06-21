@@ -13,10 +13,10 @@ namespace streamdeck_client_csharp.Messages
         [JsonProperty("payload")]
         public IPayload Payload { get; private set; }
 
-        public SetTitleMessage(string title, string context, SDKTarget target)
+        public SetTitleMessage(string title, string context, SDKTarget target, int? state)
         {
             this.Context = context;
-            this.Payload = new PayloadClass(title, target);
+            this.Payload = new PayloadClass(title, target, state);
         }
 
         private class PayloadClass : IPayload
@@ -27,10 +27,14 @@ namespace streamdeck_client_csharp.Messages
             [JsonProperty("target")]
             public SDKTarget Target { get; private set; }
 
-            public PayloadClass(string title, SDKTarget target)
+            [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+            public int? State { get; private set; }
+
+            public PayloadClass(string title, SDKTarget target, int? state)
             {
                 this.Title = title;
                 this.Target = target;
+                this.State = state;
             }
         }
     }
