@@ -3,24 +3,24 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>streamdeck_client_csharp</RootNamespace>
-    <Version>4.1.1.0</Version>
+    <Version>4.2.0.0</Version>
     <Authors>Shane DeSeranno</Authors>
     <Product />
     <Description>This is a C# wrapper library used to write Elgato Stream Deck plugins.</Description>
-    <Copyright>Copyright © Shane DeSeranno (TyrenDe) 2019</Copyright>
+    <Copyright>Copyright © Shane DeSeranno (TyrenDe) 2020</Copyright>
     <PackageLicenseUrl>https://github.com/TyrenDe/streamdeck-client-csharp/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/TyrenDe/streamdeck-client-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TyrenDe/streamdeck-client-csharp</RepositoryUrl>
     <PackageTags>Streaming Stream Deck Elgato</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>4.1.1.0</AssemblyVersion>
-    <FileVersion>4.1.1.0</FileVersion>
-    <PackageReleaseNotes>Add empty payload and fix a smalll bug.</PackageReleaseNotes>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <FileVersion>4.2.0.0</FileVersion>
+    <PackageReleaseNotes>Added support for optional State parameter in SetImage and SetTitle events</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
 </Project>
