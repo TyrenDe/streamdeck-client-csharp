@@ -26,7 +26,7 @@ namespace streamdeck_client_csharp.Events
 
     public abstract class BaseEvent
     {
-        private static Dictionary<string, Type> s_EventMap = new Dictionary<string, Type>
+        private static readonly Dictionary<string, Type> s_EventMap = new Dictionary<string, Type>
         {
             { EventTypes.KeyDown, typeof(KeyDownEvent) },
             { EventTypes.KeyUp, typeof(KeyUpEvent) },
