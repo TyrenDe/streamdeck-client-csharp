@@ -179,7 +179,7 @@ namespace TestPlugin
                     {
                         foreach (KeyValuePair<string, int> kvp in counters.ToArray())
                         {
-                            _ = connection.SetTitleAsync(kvp.Value.ToString(), kvp.Key, SDKTarget.HardwareAndSoftware);
+                            _ = connection.SetTitleAsync(kvp.Value.ToString(), kvp.Key, SDKTarget.HardwareAndSoftware, null);
                             counters[kvp.Key]++;
                         }
                     }
@@ -188,7 +188,7 @@ namespace TestPlugin
                     {
                         foreach (string imageContext in images)
                         {
-                            _ = connection.SetImageAsync(image, imageContext, SDKTarget.HardwareAndSoftware);
+                            _ = connection.SetImageAsync(image, imageContext, SDKTarget.HardwareAndSoftware, null);
                         }
 
                         images.Clear();

@@ -18,9 +18,9 @@ namespace streamdeck_client_csharp
         private const int BufferSize = 1024 * 1024;
 
         private ClientWebSocket m_WebSocket;
-        private SemaphoreSlim m_SendSocketSemaphore = new SemaphoreSlim(1);
-        private CancellationTokenSource m_CancelSource = new CancellationTokenSource();
-        private string m_RegisterEvent;
+        private readonly SemaphoreSlim m_SendSocketSemaphore = new SemaphoreSlim(1);
+        private readonly CancellationTokenSource m_CancelSource = new CancellationTokenSource();
+        private readonly string m_RegisterEvent;
 
         /// <summary>
         /// The port used to connect to the StreamDeck websocket
