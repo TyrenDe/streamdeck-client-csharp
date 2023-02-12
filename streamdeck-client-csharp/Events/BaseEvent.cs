@@ -17,11 +17,15 @@ namespace streamdeck_client_csharp.Events
         public const string DeviceDidDisconnect = "deviceDidDisconnect";
         public const string ApplicationDidLaunch = "applicationDidLaunch";
         public const string ApplicationDidTerminate = "applicationDidTerminate";
-        public const string SendToPlugin = "sendToPlugin";
+        public const string SystemDidWakeUp = "systemDidWakeUp";
         public const string DidReceiveSettings = "didReceiveSettings";
         public const string DidReceiveGlobalSettings = "didReceiveGlobalSettings";
         public const string PropertyInspectorDidAppear = "propertyInspectorDidAppear";
         public const string PropertyInspectorDidDisappear = "propertyInspectorDidDisappear";
+        public const string SendToPlugin = "sendToPlugin";
+        public const string DialRotate = "dialRotate";
+        public const string DialPress = "dialPress";
+        public const string TouchpadPress = "touchTap";
     }
 
     public abstract class BaseEvent
@@ -42,13 +46,19 @@ namespace streamdeck_client_csharp.Events
             { EventTypes.ApplicationDidLaunch, typeof(ApplicationDidLaunchEvent) },
             { EventTypes.ApplicationDidTerminate, typeof(ApplicationDidTerminateEvent) },
 
-            { EventTypes.SendToPlugin, typeof(SendToPluginEvent) },
+            { EventTypes.SystemDidWakeUp, typeof(SystemDidWakeUpEvent) },
 
             { EventTypes.DidReceiveSettings, typeof(DidReceiveSettingsEvent) },
             { EventTypes.DidReceiveGlobalSettings, typeof(DidReceiveGlobalSettingsEvent) },
 
             { EventTypes.PropertyInspectorDidAppear, typeof(PropertyInspectorDidAppearEvent) },
             { EventTypes.PropertyInspectorDidDisappear, typeof(PropertyInspectorDidDisappearEvent) },
+
+            { EventTypes.SendToPlugin, typeof(SendToPluginEvent) },
+
+            { EventTypes.DialRotate, typeof(DialRotateEvent) },
+            { EventTypes.DialPress, typeof(DialPressEvent) },
+            { EventTypes.TouchpadPress, typeof(TouchpadPressEvent) },
         };
 
         [JsonProperty("event")]
