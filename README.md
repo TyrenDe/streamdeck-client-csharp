@@ -6,6 +6,9 @@ A C# client library for the Elgato Stream Deck device.
 ## What is this?
 Elgato just released their [Official Stream Deck SDK](https://developer.elgato.com/documentation/stream-deck/sdk/overview/), but it only supported Javascript, C++, and Objective-C.  I was frustrated as I prefer C# as my go-to language.  So, I wrote this wrapper to ease writing plugins.
 
+## What's New
+Added support for new Stream Deck+ SDK
+
 ## Requirements
 This library uses the native WebSocket support found in Windows 8 & higher. This means that any application that uses this library must be running Windows 8 or higher.
 
