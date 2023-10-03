@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using streamdeck_client_csharp.Events;
 using streamdeck_client_csharp.Messages;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -44,11 +45,16 @@ namespace streamdeck_client_csharp
         public event EventHandler<StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>> OnDeviceDidDisconnect;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>> OnApplicationDidLaunch;
         public event EventHandler<StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>> OnApplicationDidTerminate;
-        public event EventHandler<StreamDeckEventReceivedEventArgs<SendToPluginEvent>> OnSendToPlugin;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<SystemDidWakeUpEvent>> OnSystemDidWakeUp;
         public event EventHandler<StreamDeckEventReceivedEventArgs<DidReceiveSettingsEvent>> OnDidReceiveSettings;
         public event EventHandler<StreamDeckEventReceivedEventArgs<DidReceiveGlobalSettingsEvent>> OnDidReceiveGlobalSettings;
         public event EventHandler<StreamDeckEventReceivedEventArgs<PropertyInspectorDidAppearEvent>> OnPropertyInspectorDidAppear;
         public event EventHandler<StreamDeckEventReceivedEventArgs<PropertyInspectorDidDisappearEvent>> OnPropertyInspectorDidDisappear;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<SendToPluginEvent>> OnSendToPlugin;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<DialRotateEvent>> OnDialRotate;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<DialPressEvent>> OnDialPress;
+        public event EventHandler<StreamDeckEventReceivedEventArgs<TouchpadPressEvent>> OnTouchpadPress;
+
 
         public StreamDeckConnection(int port, string uuid, string registerEvent)
         {
@@ -153,6 +159,21 @@ namespace streamdeck_client_csharp
             return SendAsync(new OpenUrlMessage(uri));
         }
 
+        public Task SetFeedbackAsync(Dictionary<string, string> dictKeyValues, string context)
+        {
+            return SendAsync(new SetFeedbackMessage(dictKeyValues, context));
+        }
+
+        public Task SetFeedbackAsync(JObject feedbackPayload, string context)
+        {
+            return SendAsync(new SetFeedbackMessageEx(feedbackPayload, context));
+        }
+
+        public Task SetFeedbackLayoutAsync(string layout, string context)
+        {
+            return SendAsync(new SetFeedbackLayoutMessage(layout, context));
+        }
+
         private Task SendAsync(IMessage message)
         {
             return SendAsync(JsonConvert.SerializeObject(message));
@@ -242,11 +263,15 @@ namespace streamdeck_client_csharp
                                         case EventTypes.DeviceDidDisconnect: OnDeviceDidDisconnect?.Invoke(this, new StreamDeckEventReceivedEventArgs<DeviceDidDisconnectEvent>(evt as DeviceDidDisconnectEvent)); break;
                                         case EventTypes.ApplicationDidLaunch: OnApplicationDidLaunch?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidLaunchEvent>(evt as ApplicationDidLaunchEvent)); break;
                                         case EventTypes.ApplicationDidTerminate: OnApplicationDidTerminate?.Invoke(this, new StreamDeckEventReceivedEventArgs<ApplicationDidTerminateEvent>(evt as ApplicationDidTerminateEvent)); break;
-                                        case EventTypes.SendToPlugin: OnSendToPlugin?.Invoke(this, new StreamDeckEventReceivedEventArgs<SendToPluginEvent>(evt as SendToPluginEvent)); break;
+                                        case EventTypes.SystemDidWakeUp: OnSystemDidWakeUp?.Invoke(this, new StreamDeckEventReceivedEventArgs<SystemDidWakeUpEvent>(evt as SystemDidWakeUpEvent)); break;
                                         case EventTypes.DidReceiveSettings: OnDidReceiveSettings?.Invoke(this, new StreamDeckEventReceivedEventArgs<DidReceiveSettingsEvent>(evt as DidReceiveSettingsEvent)); break;
                                         case EventTypes.DidReceiveGlobalSettings: OnDidReceiveGlobalSettings?.Invoke(this, new StreamDeckEventReceivedEventArgs<DidReceiveGlobalSettingsEvent>(evt as DidReceiveGlobalSettingsEvent)); break;
                                         case EventTypes.PropertyInspectorDidAppear: OnPropertyInspectorDidAppear?.Invoke(this, new StreamDeckEventReceivedEventArgs<PropertyInspectorDidAppearEvent>(evt as PropertyInspectorDidAppearEvent)); break;
                                         case EventTypes.PropertyInspectorDidDisappear: OnPropertyInspectorDidDisappear?.Invoke(this, new StreamDeckEventReceivedEventArgs<PropertyInspectorDidDisappearEvent>(evt as PropertyInspectorDidDisappearEvent)); break;
+                                        case EventTypes.SendToPlugin: OnSendToPlugin?.Invoke(this, new StreamDeckEventReceivedEventArgs<SendToPluginEvent>(evt as SendToPluginEvent)); break;
+                                        case EventTypes.DialRotate: OnDialRotate?.Invoke(this, new StreamDeckEventReceivedEventArgs<DialRotateEvent>(evt as DialRotateEvent)); break;
+                                        case EventTypes.DialPress: OnDialPress?.Invoke(this, new StreamDeckEventReceivedEventArgs<DialPressEvent>(evt as DialPressEvent)); break;
+                                        case EventTypes.TouchpadPress: OnTouchpadPress?.Invoke(this, new StreamDeckEventReceivedEventArgs<TouchpadPressEvent>(evt as TouchpadPressEvent)); break;
                                     }
                                 }
                                 else

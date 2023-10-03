@@ -16,5 +16,11 @@ namespace streamdeck_client_csharp.Events
 
         [JsonProperty("isInMultiAction")]
         public bool IsInMultiAction { get; private set; }
+
+        /// <summary>
+        /// Controller which issued the event
+        /// </summary>
+        [JsonProperty("controller")]
+        public string Controller { get; private set; }
     }
 }
