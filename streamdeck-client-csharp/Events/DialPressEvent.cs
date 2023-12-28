@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace streamdeck_client_csharp.Events
+namespace StreamDeck.Client.Events
 {
     /// <summary>
     /// Payload for Dial press/unpress event

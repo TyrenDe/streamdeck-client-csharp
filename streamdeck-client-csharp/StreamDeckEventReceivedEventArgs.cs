@@ -1,7 +1,7 @@
-﻿using streamdeck_client_csharp.Events;
+﻿using StreamDeck.Client.Events;
 using System;
 
-namespace streamdeck_client_csharp
+namespace StreamDeck.Client
 {
     public class StreamDeckEventReceivedEventArgs<T> : EventArgs
     {

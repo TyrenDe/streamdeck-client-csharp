@@ -1,4 +1,4 @@
-﻿namespace streamdeck_client_csharp
+﻿namespace StreamDeck.Client
 {
     public enum SDKTarget : int
     {

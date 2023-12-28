@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace streamdeck_client_csharp.Messages
+namespace StreamDeck.Client.Messages
 {
     internal class SetFeedbackMessage : IMessage
     {

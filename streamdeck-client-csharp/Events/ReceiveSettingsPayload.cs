@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace streamdeck_client_csharp.Events
+namespace StreamDeck.Client.Events
 {
     public class ReceiveSettingsPayload
     {

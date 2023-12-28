@@ -1,4 +1,4 @@
-﻿namespace streamdeck_client_csharp.Messages
+﻿namespace StreamDeck.Client.Messages
 {
     internal interface IMessage
     {

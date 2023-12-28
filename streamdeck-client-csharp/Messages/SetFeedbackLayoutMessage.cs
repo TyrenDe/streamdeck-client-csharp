@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace streamdeck_client_csharp.Messages
+namespace StreamDeck.Client.Messages
 {
     internal class SetFeedbackLayoutMessage : IMessage
     {

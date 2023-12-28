@@ -2,8 +2,8 @@
 using CommandLine.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using streamdeck_client_csharp;
-using streamdeck_client_csharp.Events;
+using StreamDeck.Client;
+using StreamDeck.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

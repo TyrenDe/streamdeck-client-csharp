@@ -1,4 +1,4 @@
-﻿namespace streamdeck_client_csharp.Events
+﻿namespace StreamDeck.Client.Events
 {
     public enum DeviceType : int
     {
