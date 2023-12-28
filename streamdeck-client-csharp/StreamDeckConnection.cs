@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using streamdeck_client_csharp.Events;
-using streamdeck_client_csharp.Messages;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,8 +9,10 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using StreamDeck.Client.Events;
+using StreamDeck.Client.Messages;
 
-namespace streamdeck_client_csharp
+namespace StreamDeck.Client
 {
     public class StreamDeckConnection
     {

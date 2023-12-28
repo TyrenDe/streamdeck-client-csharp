@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace streamdeck_client_csharp.Events
+namespace StreamDeck.Client.Events
 {
     public class DeviceDidConnectEvent : BaseEvent
     {

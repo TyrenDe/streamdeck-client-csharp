@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace streamdeck_client_csharp.Messages
+namespace StreamDeck.Client.Messages
 {
     internal class GetSettingsMessage : IMessage
     {

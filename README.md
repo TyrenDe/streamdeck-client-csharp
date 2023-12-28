@@ -9,6 +9,11 @@ Elgato just released their [Official Stream Deck SDK](https://developer.elgato.c
 ## What's New
 Added support for new Stream Deck+ SDK
 
+## Breaking Changes
+
+- `streamdeck_client_csharp` namespace has been changed to `StreamDeck.Client`.
+
+
 ## Requirements
 This library uses the native WebSocket support found in Windows 8 & higher. This means that any application that uses this library must be running Windows 8 or higher.
 
